@@ -1,0 +1,10 @@
+C:\Users\RAUL\source\repos\Holamundo\bin\Debug\Holamundo.exe.config
+C:\Users\RAUL\source\repos\Holamundo\bin\Debug\Holamundo.exe
+C:\Users\RAUL\source\repos\Holamundo\bin\Debug\Holamundo.pdb
+C:\Users\RAUL\source\repos\Holamundo\bin\Debug\OpenTK.dll
+C:\Users\RAUL\source\repos\Holamundo\bin\Debug\OpenTK.pdb
+C:\Users\RAUL\source\repos\Holamundo\bin\Debug\OpenTK.xml
+C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.csproj.CoreCompileInputs.cache
+C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.csproj.CopyComplete
+C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.exe
+C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.pdb
