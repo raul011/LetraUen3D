@@ -7,6 +7,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Holamundo
 {
@@ -31,7 +32,11 @@ namespace Holamundo
         public float angleX = 0.0f;
         public float angleY = 0.0f;
 
-        // Tamaño de la ventana
+        public float ejeX = -1.0f;
+        public float ejeY = -1.0f;
+        public float ejeZ = 0.3f;
+
+        
         public const int WindowWidth = 1000;
         public const int WindowHeight = 1000;
 
@@ -53,7 +58,7 @@ namespace Holamundo
         private Parte CrearParteU()
         {
             var parteU = new Parte();
-            var poligonos = Vertice.CrearPoligonos();
+            var poligonos = Vertice.CrearPoligonos(ejeX, ejeY, ejeZ);
 
             // PILAR IZQUIERDO
             parteU.Add(1, poligonos["caraFrontalIzq"]);
@@ -101,9 +106,11 @@ namespace Holamundo
             GL.LoadIdentity();
 
             // para la posicion de la letra
-            GL.Translate(0.0f, -0.2f, -3.0f);
+            // GL.Translate(0.0f, -0.2f, -3.0f);
             GL.Rotate(angleX, 1.0, 0.0, 0.0);
             GL.Rotate(angleY, 0.0, 1.0, 0.0);
+
+            DibujarEjes();
 
             escena.Draw();
 
@@ -118,6 +125,38 @@ namespace Holamundo
             angleX += rotationSpeed * (float)e.Time;
             angleY += rotationSpeed * (float)e.Time;
         }
+
+
+        private void DibujarEjes()
+        {
+            GL.LineWidth(4.0f);
+            GL.Begin(PrimitiveType.Lines);
+
+            // Eje X (rojo)
+            GL.Color3(1.0f, 0.0f, 0.0f);
+            GL.Vertex3(-2.0f, 0.0f, 0.0f);
+            GL.Vertex3(2.0f, 0.0f, 0.0f);
+
+            // Eje Y (verde)
+            GL.Color3(0.0f, 1.0f, 0.0f);
+            GL.Vertex3(0.0f, -2.0f, 0.0f);
+            GL.Vertex3(0.0f, 2.0f, 0.0f);
+
+            // Eje Z (azul)
+            GL.Color3(0.0f, 0.0f, 1.0f);
+            GL.Vertex3(0.0f, 0.0f, -2.0f);
+            GL.Vertex3(0.0f, 0.0f, 2.0f);
+
+            GL.End();
+            GL.LineWidth(1.0f);
+        }
+
+
+
+
+
+
+
 
 
     }
@@ -140,7 +179,7 @@ namespace Holamundo
                 objetos.Add(objeto);
             }
         }
-        
+
         public void Draw()
         {
             foreach (var objeto in objetos)
@@ -267,7 +306,7 @@ namespace Holamundo
             return poligono;
         }
 
-        public static Dictionary<string, Poligono> CrearPoligonos()
+        public static Dictionary<string, Poligono> CrearPoligonos(float ejeX, float ejeY, float ejeZ)
         {
             var poligonos = new Dictionary<string, Poligono>();
 
@@ -287,137 +326,143 @@ namespace Holamundo
             //IA1,IB1,IC1,ID1,IA2,IB2  etc....  SON MIS PUNTOS X,Y,Z CREADOS EN GEOGEBRA PARA GUIARMA AL ARMAR LA LETRA
             poligonos["caraFrontalIzq"] = CrearPoligonoConColor(
                 color_azul_vibrante,
-                new Vertice(-0.7f, 0.8f, 0.0f), //VA1
-                new Vertice(-0.7f, -0.8f, 0.0f), //VB1
-                new Vertice(-0.4f, -0.8f, 0.0f), //VC1
-                new Vertice(-0.4f, 0.8f, 0.0f)); //VD1
+                new Vertice(-0.7f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), //VA1
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), //VB1
+                new Vertice(-0.4f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), //VC1
+                new Vertice(-0.4f + ejeX, 0.8f + ejeY, 0.0f + ejeZ)); //VD1
 
             poligonos["caraTraseraIzq"] = CrearPoligonoConColor(
                 color_azul_vibrante,
-                new Vertice(-0.7f, 0.8f, 0.3f),//VA2
-                new Vertice(-0.7f, -0.8f, 0.3f),//VB2
-                new Vertice(-0.4f, -0.8f, 0.3f),//VC2
-                new Vertice(-0.4f, 0.8f, 0.3f));//VD2
+                new Vertice(-0.7f + ejeX, 0.8f + ejeY, 0.3f + ejeZ),//VA2
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ),//VB2
+                new Vertice(-0.4f + ejeX, -0.8f + ejeY, 0.3f + ejeZ),//VC2
+                new Vertice(-0.4f + ejeX, 0.8f + ejeY, 0.3f + ejeZ));//VD2
 
             poligonos["caraSuperiorIzq"] = CrearPoligonoConColor(
                 color_turquesa,
-                new Vertice(-0.7f, 0.8f, 0.0f), //VA1
-                new Vertice(-0.7f, 0.8f, 0.3f), //VA2
-                new Vertice(-0.4f, 0.8f, 0.3f), //VD2
-                new Vertice(-0.4f, 0.8f, 0.0f)); //VD1
+                new Vertice(-0.7f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), //VA1
+                new Vertice(-0.7f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), //VA2
+                new Vertice(-0.4f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), //VD2
+                new Vertice(-0.4f + ejeX, 0.8f + ejeY, 0.0f + ejeZ)); //VD1
             poligonos["tapainfladoizq"] = CrearPoligonoConColor(
                 color2,
-                new Vertice(-0.7f, -0.8f, 0.0f), //IA1
-                new Vertice(-0.4f, -0.8f, 0.0f), //VC1
-                new Vertice(-0.4f, -0.8f, 0.3f), //VC2
-                new Vertice(-0.7f, -0.8f, 0.3f)); //VB2
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), //IA1
+                new Vertice(-0.4f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), //VC1
+                new Vertice(-0.4f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), //VC2
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ)); //VB2
 
             //tapaladoizq_pilar_izq
             poligonos["tapaladoizq_pilar_izq"] = CrearPoligonoConColor(
                 color_azul,
-                new Vertice(-0.7f, 0.8f, 0.0f), //VA1
-                new Vertice(-0.7f, 0.8f, 0.3f), //VA2
-                new Vertice(-0.7f, -0.8f, 0.3f), //VB2
-                new Vertice(-0.7f, -0.8f, 0.0f)); //IA1
+                new Vertice(-0.7f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), //VA1
+                new Vertice(-0.7f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), //VA2
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), //VB2
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ)); //IA1
 
             //tapaladoder_pilar_izq
             poligonos["tapaladoder_pilar_izq"] = CrearPoligonoConColor(
                 color_negro,
-                new Vertice(-0.4f, 0.8f, 0.0f), //VD1
-                new Vertice(-0.4f, 0.8f, 0.3f), //VD2
-                new Vertice(-0.4f, -0.8f, 0.3f), //VC2
-                new Vertice(-0.4f, -0.8f, 0.0f)); //VC1
+                new Vertice(-0.4f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), //VD1
+                new Vertice(-0.4f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), //VD2
+                new Vertice(-0.4f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), //VC2
+                new Vertice(-0.4f + ejeX, -0.8f + ejeY, 0.0f + ejeZ)); //VC1
 
             // Pilar derechoPILAR DERECHO  ---------PILAR DERECHO --PILAR DERECHO
             poligonos["caraFrontalDer"] = CrearPoligonoConColor(
                 color1,
-                new Vertice(0.4f, 0.8f, 0.0f), //VD3
-                new Vertice(0.7f, 0.8f, 0.0f), //VA3
-                new Vertice(0.7f, -0.8f, 0.0f), //VB3
-                new Vertice(0.4f, -0.8f, 0.0f)); //VC3
+                new Vertice(0.4f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), // VD3
+                new Vertice(0.7f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), // VA3
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), // VB3
+                new Vertice(0.4f + ejeX, -0.8f + ejeY, 0.0f + ejeZ));  // VC3
+
 
             poligonos["caraTraseraDer"] = CrearPoligonoConColor(
-                color_azul_vibrante,
-                new Vertice(0.4f, 0.8f, 0.3f), //VD4
-                new Vertice(0.7f, 0.8f, 0.3f), //VA4
-                new Vertice(0.7f, -0.8f, 0.3f), //VB4
-                new Vertice(0.4f, -0.8f, 0.3f)); //VC4
+               color_azul_vibrante,
+               new Vertice(0.4f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), // VD4
+               new Vertice(0.7f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), // VA4
+               new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // VB4
+               new Vertice(0.4f + ejeX, -0.8f + ejeY, 0.3f + ejeZ));  // VC4
+
 
             poligonos["caraSuperiorDer"] = CrearPoligonoConColor(
                 color_turquesa,
-                new Vertice(0.7f, 0.8f, 0.0f), //VA3
-                new Vertice(0.4f, 0.8f, 0.0f), //VD3
-                new Vertice(0.4f, 0.8f, 0.3f), //VD4
-                new Vertice(0.7f, 0.8f, 0.3f)); //VA4
+                new Vertice(0.7f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), // VA3
+                new Vertice(0.4f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), // VD3
+                new Vertice(0.4f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), // VD4
+                new Vertice(0.7f + ejeX, 0.8f + ejeY, 0.3f + ejeZ)  // VA4
+            );
 
             poligonos["tapainfladoder"] = CrearPoligonoConColor(
                 color2,
-                new Vertice(0.4f, -0.8f, 0.3f), //VC4
-                new Vertice(0.4f, -0.8f, 0.0f), //VC3
-                new Vertice(0.7f, -0.8f, 0.0f), //VB3
-                new Vertice(0.7f, -0.8f, 0.3f)); //VB4
+                new Vertice(0.4f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // VC4
+                new Vertice(0.4f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), // VC3
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), // VB3
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ)  // VB4
+            );
 
-            //tapaladoizq_pilar_der
             poligonos["tapaladoizq_pilar_der"] = CrearPoligonoConColor(
                 color_negro,
-                new Vertice(0.4f, 0.8f, 0.0f), //VD3
-                new Vertice(0.4f, 0.8f, 0.3f), //VD4
-                new Vertice(0.4f, -0.8f, 0.3f), //VC4
-                new Vertice(0.4f, -0.8f, 0.0f));//VC3
+                new Vertice(0.4f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), // VD3
+                new Vertice(0.4f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), // VD4
+                new Vertice(0.4f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // VC4
+                new Vertice(0.4f + ejeX, -0.8f + ejeY, 0.0f + ejeZ)  // VC3
+            );
 
-            //tapaladoder_pilar_der
             poligonos["tapaladoder_pilar_der"] = CrearPoligonoConColor(
                 color_azul,
-                new Vertice(0.7f, 0.8f, 0.3f), //VA4
-                new Vertice(0.7f, 0.8f, 0.0f), //VA3
-                new Vertice(0.7f, -0.8f, 0.0f), //VB3
-                new Vertice(0.7f, -0.8f, 0.3f)); //VB4
+                new Vertice(0.7f + ejeX, 0.8f + ejeY, 0.3f + ejeZ), // VA4
+                new Vertice(0.7f + ejeX, 0.8f + ejeY, 0.0f + ejeZ), // VA3
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), // VB3
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ)  // VB4
+            );
 
-            // Base de la "U" PILAR DE ABAJO
             poligonos["caraBaseFrontal"] = CrearPoligonoConColor(
                 color_azul_vibrante,
-                new Vertice(-0.7f, -1.1f, 0.3f),//ID2  
-                new Vertice(0.7f, -1.1f, 0.3f), //IC2
-                new Vertice(0.7f, -0.8f, 0.3f), //IB2
-                new Vertice(-0.7f, -0.8f, 0.3f) //IA2
+                new Vertice(-0.7f + ejeX, -1.1f + ejeY, 0.3f + ejeZ), // ID2  
+                new Vertice(0.7f + ejeX, -1.1f + ejeY, 0.3f + ejeZ), // IC2
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // IB2
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ) // IA2
             );
 
             poligonos["caraBaseTrasera"] = CrearPoligonoConColor(
                 color_azul_vibrante,
-                new Vertice(-0.7f, -0.8f, 0.0f), //IA1
-                new Vertice(0.7f, -0.8f, 0.0f),  //IB1
-                new Vertice(0.7f, -1.1f, 0.0f),  //IC1
-                new Vertice(-0.7f, -1.1f, 0.0f)  //ID1
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), // IA1
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ),  // IB1
+                new Vertice(0.7f + ejeX, -1.1f + ejeY, 0.0f + ejeZ),  // IC1
+                new Vertice(-0.7f + ejeX, -1.1f + ejeY, 0.0f + ejeZ)  // ID1
             );
-            poligonos["caraarriba"] = CrearPoligonoConColor(
-               color_turquesa,
-               new Vertice(-0.7f, -0.8f, 0.0f), //VB1
-               new Vertice(-0.7f, -0.8f, 0.3f), //IA2
-               new Vertice(0.7f, -0.8f, 0.3f), //IB2
-               new Vertice(0.7f, -0.8f, 0.0f)); //IB1
 
-            //tapa abajo base (suelo)
+            poligonos["caraarriba"] = CrearPoligonoConColor(
+                color_turquesa,
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), // VB1
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // IA2
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // IB2
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ)  // IB1
+            );
+
             poligonos["carasuelo"] = CrearPoligonoConColor(
                 color_negro,
-                new Vertice(-0.7f, -1.1f, 0.3f),//ID2 
-                new Vertice(0.7f, -1.1f, 0.3f), //IC2
-                new Vertice(0.7f, -1.1f, 0.0f),  //IC1
-                new Vertice(-0.7f, -1.1f, 0.0f));  //ID1
+                new Vertice(-0.7f + ejeX, -1.1f + ejeY, 0.3f + ejeZ), // ID2 
+                new Vertice(0.7f + ejeX, -1.1f + ejeY, 0.3f + ejeZ), // IC2
+                new Vertice(0.7f + ejeX, -1.1f + ejeY, 0.0f + ejeZ), // IC1
+                new Vertice(-0.7f + ejeX, -1.1f + ejeY, 0.0f + ejeZ)  // ID1
+            );
 
-            // Caras laterales de la base (parte interna)
             poligonos["caraBaseIzq"] = CrearPoligonoConColor(
                 colorAzulTransparente,
-                new Vertice(-0.7f, -0.8f, 0.3f), //IA2
-                new Vertice(-0.7f, -1.1f, 0.3f),//ID2 
-                new Vertice(-0.7f, -1.1f, 0.0f),  //ID1
-                new Vertice(-0.7f, -0.8f, 0.0f)); //IA1
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // IA2
+                new Vertice(-0.7f + ejeX, -1.1f + ejeY, 0.3f + ejeZ), // ID2 
+                new Vertice(-0.7f + ejeX, -1.1f + ejeY, 0.0f + ejeZ), // ID1
+                new Vertice(-0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ)  // IA1
+            );
 
             poligonos["caraBaseDer"] = CrearPoligonoConColor(
                 colorAzulTransparente,
-                new Vertice(0.7f, -1.1f, 0.3f), //IC2
-                new Vertice(0.7f, -0.8f, 0.3f), //IB2
-                new Vertice(0.7f, -0.8f, 0.0f),  //IB1
-                new Vertice(0.7f, -1.1f, 0.0f));  //IC1
+                new Vertice(0.7f + ejeX, -1.1f + ejeY, 0.3f + ejeZ), // IC2
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.3f + ejeZ), // IB2
+                new Vertice(0.7f + ejeX, -0.8f + ejeY, 0.0f + ejeZ), // IB1
+                new Vertice(0.7f + ejeX, -1.1f + ejeY, 0.0f + ejeZ)  // IC1
+            );
 
             return poligonos;
         }

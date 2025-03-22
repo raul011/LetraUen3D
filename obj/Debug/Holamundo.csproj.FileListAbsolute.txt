@@ -8,3 +8,4 @@ C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.csproj.CoreCompileInput
 C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.csproj.CopyComplete
 C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.exe
 C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.pdb
+C:\Users\RAUL\source\repos\Holamundo\obj\Debug\Holamundo.csproj.AssemblyReference.cache
