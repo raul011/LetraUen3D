@@ -49,16 +49,23 @@ namespace Holamundo
         private void Inicializar_Escena()
         {
             var objetoU = new Objeto3d();
-            var parteU = CrearParteU();
-            objetoU.Add(1, parteU);
+            var objetoU2 = new Objeto3d();
+            var parteU = CrearParteU(0.0f,0.0f,0.0f);
+            var parteU2 = CrearParteU(ejeX,ejeY,ejeZ);
 
+            
+            objetoU.Add(1, parteU);
+            objetoU2.Add(2, parteU2);
+
+            escena.Add(2, objetoU2);
             escena.Add(1, objetoU);
+
         }
 
-        private Parte CrearParteU()
+        private Parte CrearParteU(float x , float y , float z)
         {
             var parteU = new Parte();
-            var poligonos = Vertice.CrearPoligonos(ejeX, ejeY, ejeZ);
+            var poligonos = Vertice.CrearPoligonos(x,y,z);
 
             // PILAR IZQUIERDO
             parteU.Add(1, poligonos["caraFrontalIzq"]);
@@ -132,18 +139,18 @@ namespace Holamundo
             GL.LineWidth(4.0f);
             GL.Begin(PrimitiveType.Lines);
 
-            // Eje X (rojo)
+            // Eje X 
             GL.Color3(1.0f, 0.0f, 0.0f);
             GL.Vertex3(-2.0f, 0.0f, 0.0f);
             GL.Vertex3(2.0f, 0.0f, 0.0f);
 
-            // Eje Y (verde)
-            GL.Color3(0.0f, 1.0f, 0.0f);
+            // Eje Y 
+            GL.Color3(1.0f, 1.0f, 0.0f);
             GL.Vertex3(0.0f, -2.0f, 0.0f);
             GL.Vertex3(0.0f, 2.0f, 0.0f);
 
-            // Eje Z (azul)
-            GL.Color3(0.0f, 0.0f, 1.0f);
+            // Eje Z 
+            GL.Color3(0.0f, 1.0f, 0.0f);
             GL.Vertex3(0.0f, 0.0f, -2.0f);
             GL.Vertex3(0.0f, 0.0f, 2.0f);
 
